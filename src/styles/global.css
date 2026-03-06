@@ -1,0 +1,56 @@
+:root {
+    font-family: Iner, system-ui, Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #191a15;
+    background-color: #fbfbfb;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+*, 
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background-color: #fbfbfb;
+}
+
+img {
+    display: block;
+    min-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin-top: 0;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
