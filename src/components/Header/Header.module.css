@@ -1,6 +1,7 @@
 .header {
     border-bottom: 1px solid rgba(25, 26, 21, 0.1);
     padding: 20px 0;
+    background-color: #fbfbfb;
 }
 
 .inner {
@@ -11,6 +12,7 @@
 } 
 
 .logo {
+    flex-shrink: 0;
     font-size: 20px;
     font-weight: 700;
     line-height: 1.2;

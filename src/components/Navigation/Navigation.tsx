@@ -14,5 +14,5 @@ export default function Navigation() {
 
             <NavLink to='/favorites' className={buildLinkClass}>Favorites</NavLink>
         </nav>
-    )
+    );
 }
