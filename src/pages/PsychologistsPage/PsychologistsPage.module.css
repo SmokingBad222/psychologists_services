@@ -1,0 +1,19 @@
+.section {
+    padding: 40px 0 60px;
+}
+
+.top {
+    margin-bottom: 32px;
+}
+
+.title {
+    margin-bottom: 12px;
+    font-style: 32px;
+    line-height: 1.1;
+    color: #191a15;
+}
+
+.text {
+    max-width: 560px;
+    color: rgba(25, 26, 21, 0.8);
+}
