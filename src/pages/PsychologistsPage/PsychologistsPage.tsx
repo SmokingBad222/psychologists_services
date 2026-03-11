@@ -1,21 +1,48 @@
+import { useState } from "react";
 import Container from "../../components/Container/Container";
 import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
 import { psychologists } from "../../data/psychologists";
 import css from "./PsychologistsPage.module.css";
+import { sortPsychologists } from "../../utils/sortPsychologists";
+import type { SortOption } from "../../types/psychologist";
 
 
 export default function PsychologistsPage() {
-    const visiblePsychologists = psychologists.slice(0.3);
+    const [sortOption, setSortOption] = useState<SortOption>("name-asc");
+
+    const sortedPsychologists = sortPsychologists(psychologists, sortOption)
+    const visiblePsychologists = sortedPsychologists.slice(0.3);
 
     return (
         <section className={css.section}>
             <Container>
 
                <div className={css.top}>
-                    <h1 className={css.title}>Psychologists</h1>
-                    <p className={css.text}>Choose a specialist who matches your needs and goals.</p>
-                </div>
+                    <div>
+                        <h1 className={css.title}>Psychologists</h1>
+                        <p className={css.text}>Choose a specialist who matches your needs and goals.</p>
+                    </div>
                 
+                
+                <div className={css.controls}>
+                    <label className={css.label} htmlFor="sort">Sort by</label>
+              
+
+                <select
+                    id="sort"
+                    className={css.select}
+                    value={sortOption}
+                    onChange={(event) => setSortOption(event.target.value as SortOption)}
+                >
+                    <option value="name-asc">Name A-Z</option>
+                    <option value="name-desc">Name Z-A</option>
+                    <option value="price-asc">Price low to high</option>
+                    <option value="price-desc">Price high to low</option>
+                    <option value="rating-asc">Rating low to high</option>
+                    <option value="rating-desc">Rating high to low</option>
+                </select>
+                </div>
+              </div>
                 <PsychologistsList items={visiblePsychologists} /> 
             </Container>
         </section>     

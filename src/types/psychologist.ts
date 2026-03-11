@@ -17,3 +17,11 @@ export interface Psychologist {
     initial_consultation: string;
     about: string;
 }
+
+export type SortOption =
+    | "name-asc"
+    | "name-desc"
+    | "price-asc"
+    | "price-desc"
+    | "rating-asc"
+    | "rating-desc";
