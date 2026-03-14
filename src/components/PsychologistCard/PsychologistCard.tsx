@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Psychologist } from "../../types/psychologist";
 import css from "./PsychologistCard.module.css";
 
@@ -17,8 +18,15 @@ export default function PsychologistCard({
     specialization,
     initial_consultation,
     about,
+    license,
+    reviews,
     } = psychologist;
     
+    const [isExpanded, setIsExpanded] = useState(false);
+    const handleToggleDetails = () => {
+        setIsExpanded((prev) => !prev);
+    };
+
     return (
         <article className={css.card}>
             <div className={css.top}>
@@ -53,8 +61,34 @@ export default function PsychologistCard({
 
             <p className={css.about}>{about}</p>
             
+
+             {isExpanded && (
+                <div className={css.details}>
+                    <p className={css.license}>
+                    <span className={css.infoLabel}>License:</span> {license}
+                    </p>
+
+                    <div className={css.reviewsBlock}>
+                        <h3 className={css.reviewsTitle}>Reviews</h3>
+
+                        <ul className={css.reviewsList}>
+                                {reviews.map((review, index) => (
+                                <li key={`${review.reviewer}-${index}`} className={css.reviewItem}>
+                                    <p className={css.reviewAuthor}>
+                                    {review.reviewer} <span>• {review.rating}</span>
+                                    </p>
+                                    <p className={css.reviewComment}>{review.comment}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
+
             <div className={css.actions}>
-                <button type="button" className={css.button}>Read more</button>
+                <button type="button" className={css.button} onClick={handleToggleDetails}>
+                    {isExpanded ? "Show less" : "Read more"}
+                </button>
 
                 <button type="button" className={css.buttonSecondary}>Add to favorites</button>
             </div>

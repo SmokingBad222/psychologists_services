@@ -86,3 +86,57 @@
     background-color: #e7f9f1;
     color: #191a15;
 }
+
+.details {
+    margin-bottom: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(25, 26, 21, 0.08);
+}
+
+.license {
+    margin: 0 0 20px;
+    color: #191a15;
+}
+
+.reviewBlock {
+    display: grid;
+    gap: 16px;
+}
+
+.reviewsTitle {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.2;
+    color: #191a15;
+}
+
+.reviewsList {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.reviewItem {
+    padding: 16px;
+    border-radius: 16px;
+    background-color: #f6f6f6;
+}
+
+.reviewAuthor {
+    margin: 0 0 8px;
+    font-weight: 600;
+    color: #191a15;
+}
+
+.reviewAuthor span {
+    color: rgba(25, 26, 21, 0.6);
+    font-weight: 500;
+}
+
+.reviewComment {
+    margin: 0;
+    color: rgba(25, 26, 21, 0.8);
+    line-height: 1.5;
+}
