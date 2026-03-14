@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Container from "../../components/Container/Container";
 import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
+import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
 import { psychologists } from "../../data/psychologists";
 import css from "./PsychologistsPage.module.css";
 import { sortPsychologists } from "../../utils/sortPsychologists";
@@ -9,9 +10,16 @@ import type { SortOption } from "../../types/psychologist";
 
 export default function PsychologistsPage() {
     const [sortOption, setSortOption] = useState<SortOption>("name-asc");
+    const [visibleCount, setvisibleCount] = useState(3);
 
     const sortedPsychologists = sortPsychologists(psychologists, sortOption)
-    const visiblePsychologists = sortedPsychologists.slice(0.3);
+    const visiblePsychologists = sortedPsychologists.slice(0, visibleCount);
+
+    const hasMore = visibleCount < sortedPsychologists.length;
+
+    const handleLoadMore = () => {
+        setvisibleCount((prev) => prev + 3);
+    };
 
     return (
         <section className={css.section}>
@@ -43,7 +51,13 @@ export default function PsychologistsPage() {
                 </select>
                 </div>
               </div>
-                <PsychologistsList items={visiblePsychologists} /> 
+                <PsychologistsList items={visiblePsychologists} />
+                
+                {hasMore && (
+                    <div className={css.loadMoreWrapper}>
+                        <LoadMoreButton onClick={handleLoadMore} />
+                    </div>
+                )}
             </Container>
         </section>     
     );

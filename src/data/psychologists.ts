@@ -4,7 +4,7 @@ export const psychologists: Psychologist[] = [
   {
     id: "1",
     name: "Dr. Sarah Davis",
-    avatar_url: "https://via.placeholder.com/96x96.png?text=SD",
+    avatar_url: "/public/images/female-avatar-placeholder.png",
     experience: "12 years",
     reviews: [
       {
@@ -29,7 +29,7 @@ export const psychologists: Psychologist[] = [
   {
     id: "2",
     name: "Dr. Emily Carter",
-    avatar_url: "https://via.placeholder.com/96x96.png?text=EC",
+    avatar_url: "/public/images/female-avatar-placeholder.png",
     experience: "9 years",
     reviews: [
       {
@@ -49,7 +49,7 @@ export const psychologists: Psychologist[] = [
   {
     id: "3",
     name: "Dr. Olivia Moore",
-    avatar_url: "https://via.placeholder.com/96x96.png?text=OM",
+    avatar_url: "/public/images/female-avatar-placeholder.png",
     experience: "7 years",
     reviews: [
       {
@@ -69,7 +69,7 @@ export const psychologists: Psychologist[] = [
   {
     id: "4",
     name: "Dr. Daniel Lee",
-    avatar_url: "https://via.placeholder.com/96x96.png?text=DL",
+    avatar_url: "/public/images/male-avatar-placeholder.png",
     experience: "15 years",
     reviews: [
       {

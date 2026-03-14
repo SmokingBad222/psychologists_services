@@ -44,6 +44,12 @@
     cursor: pointer;
 }
 
+.loadMoreWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
 @media (min-width: 768px) {
     .top {
         flex-direction: row;
