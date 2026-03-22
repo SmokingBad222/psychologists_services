@@ -4,10 +4,14 @@ import css from "./PsychologistCard.module.css";
 
 interface PsychologistCardProps {
     psychologist: Psychologist;
+    isFavorite: boolean;
+    onToggleFavorite: (psychologistIds: string) => void;
 }
 
 export default function PsychologistCard({
-  psychologist,
+    psychologist,
+    isFavorite,
+    onToggleFavorite,
 }: PsychologistCardProps) {
   const {
     name,
@@ -90,7 +94,13 @@ export default function PsychologistCard({
                     {isExpanded ? "Show less" : "Read more"}
                 </button>
 
-                <button type="button" className={css.buttonSecondary}>Add to favorites</button>
+                <button
+                    type="button"
+                    className={isFavorite ? css.buttonActive : css.buttonSecondary}
+                    onClick={() => onToggleFavorite(psychologist.id)}            
+                >
+                    {isFavorite ? "Remove from favorites" : "Add to favorites"}
+                </button>
             </div>
         </article>
     );

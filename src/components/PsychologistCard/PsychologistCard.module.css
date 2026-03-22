@@ -82,6 +82,16 @@
     color: #191a15;
 }
 
+.buttonActive {
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background-color: #54be96;
+    color: #fbfbfb;
+}
+
 .buttonSecondary {
     background-color: #e7f9f1;
     color: #191a15;

@@ -6,11 +6,14 @@ import { psychologists } from "../../data/psychologists";
 import css from "./PsychologistsPage.module.css";
 import { sortPsychologists } from "../../utils/sortPsychologists";
 import type { SortOption } from "../../types/psychologist";
+import { getFavoriteIds, saveFavoriteIds } from "../../utils/favorites";
 
 
 export default function PsychologistsPage() {
     const [sortOption, setSortOption] = useState<SortOption>("name-asc");
     const [visibleCount, setvisibleCount] = useState(3);
+    const [favoriteIds, setFavoriteIds] = useState<string[]>(getFavoriteIds);
+
 
     const sortedPsychologists = sortPsychologists(psychologists, sortOption)
     const visiblePsychologists = sortedPsychologists.slice(0, visibleCount);
@@ -20,6 +23,21 @@ export default function PsychologistsPage() {
     const handleLoadMore = () => {
         setvisibleCount((prev) => prev + 3);
     };
+
+    const handleToggleFavorite = (psychologistId: string) => {
+        setFavoriteIds((prev) => {
+        const isFavorite = prev.includes(psychologistId);
+
+        const nextFavoriteIds = isFavorite
+            ? prev.filter((id) => id !== psychologistId)
+            : [...prev, psychologistId];
+
+        saveFavoriteIds(nextFavoriteIds);
+
+        return nextFavoriteIds;
+        });
+    };
+
 
     return (
         <section className={css.section}>
@@ -51,7 +69,12 @@ export default function PsychologistsPage() {
                 </select>
                 </div>
               </div>
-                <PsychologistsList items={visiblePsychologists} />
+                <PsychologistsList
+                    items={visiblePsychologists}
+                    favoriteIds={favoriteIds}
+                    onToggleFavorite={handleToggleFavorite}
+                />
+
                 
                 {hasMore && (
                     <div className={css.loadMoreWrapper}>
