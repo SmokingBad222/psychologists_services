@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import css from "./HomePage.module.css";
+import AuthPanel from "../../components/AuthPanel/AuthPanel";
 
 export default function HomePage() {
     return (
@@ -26,6 +27,8 @@ export default function HomePage() {
                         <div className={css.card}> Future image / visual block</div>
                     </div>
                 </div>
+
+                <AuthPanel />
             </Container>
         </section>
     );
