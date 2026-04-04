@@ -23,3 +23,7 @@ export function saveAuthData(data: StoredAuthData): void {
 export function clearAuthData(): void {
     localStorage.removeItem(AUTH_STORAGE_KEY);
 }
+
+export function isAuthenticated(): boolean {
+    return Boolean(getAuthData());
+}
