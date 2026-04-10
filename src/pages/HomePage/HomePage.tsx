@@ -1,9 +1,17 @@
-import { Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
-import css from "./HomePage.module.css";
 import AuthPanel from "../../components/AuthPanel/AuthPanel";
+import css from "./HomePage.module.css";
+import type { StoredAuthData } from "../../types/auth";
+
+type OutletContextType = {
+  authUser: StoredAuthData | null;
+  setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
+};
 
 export default function HomePage() {
+    const { authUser, setAuthUser } = useOutletContext<OutletContextType>();
+    
     return (
         <section className={ css.hero}>
             <Container>
@@ -19,8 +27,8 @@ export default function HomePage() {
                             We help you find a specialist for support, growth, balance and meaningful change in life.
                         </p>
 
-                        <Link to="/psychologists" className={css.link}>Get started
-                        </Link>
+                        <a href="/psychologists" className={css.link}>Get started
+                        </a>
                     </div>
 
                     <div className={css.visual}>
@@ -28,7 +36,7 @@ export default function HomePage() {
                     </div>
                 </div>
 
-                <AuthPanel />
+                <AuthPanel authUser={authUser} setAuthUser={setAuthUser} onClose={()=>{}}/>
             </Container>
         </section>
     );

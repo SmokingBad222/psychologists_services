@@ -1,19 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { loginUser, logoutUser, registerUser } from "../../api/auth";
-import { getAuthData } from "../../utils/authStorage";
 import type { StoredAuthData } from "../../types/auth";
+import css from "./AuthPanel.module.css";
 
-export default function AuthPanel() {
+interface AuthPanelProps {
+  authUser: StoredAuthData | null;
+    setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
+    onClose: () => void;
+}
+
+export default function AuthPanel({
+    authUser,
+    setAuthUser,
+    onClose,
+}: AuthPanelProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [authUser, setAuthUser] = useState<StoredAuthData | null>(null);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        const savedAuthData = getAuthData();
-        setAuthUser(savedAuthData);
-    }, []);
 
     const handleRegister = async () => {
         try {
@@ -22,6 +26,7 @@ export default function AuthPanel() {
 
             const data = await registerUser(email, password);
             setAuthUser(data);
+            onClose();
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -40,6 +45,7 @@ export default function AuthPanel() {
 
             const data = await loginUser(email, password);
             setAuthUser(data);
+            onClose();
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -56,41 +62,84 @@ export default function AuthPanel() {
         setAuthUser(null);
     };
 
+ return (
+    <section className={css.panel}>
+      <div className={css.card}>
+        <div className={css.top}>
+          <div>
+            <h2 className={css.title}>Authorization</h2>
+            <p className={css.text}>
+              Register a new account or log in to continue.
+            </p>
+          </div>
 
-    return (
-        <section>
-            <h2>Auth test panel</h2>
+          <button type="button" className={css.closeButton} onClick={onClose}>
+            Close
+          </button>
+        </div>
 
-            <input type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-            />
+        <div className={css.fields}>
+          <input
+            className={css.input}
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
 
-            <input type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-            />
+          <input
+            className={css.input}
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
 
-            <div>
-                <button type="button" onClick={handleRegister} disabled={isLoading}>Register</button>
-                <button type="button" onClick={handleLogin} disabled={isLoading}>Login</button>
-                <button type="button" onClick={handleLogout}>Logout</button>
-            </div>
+        <div className={css.actions}>
+          <button
+            type="button"
+            className={css.primaryButton}
+            onClick={handleRegister}
+            disabled={isLoading}
+          >
+            Register
+          </button>
 
-            {isLoading && <p>Loading...</p>}
+          <button
+            type="button"
+            className={css.primaryButton}
+            onClick={handleLogin}
+            disabled={isLoading}
+          >
+            Login
+          </button>
 
-            {error && <p>{error}</p>}
-            
-            {authUser && (
-                <div>
-                    <p>User is loged in</p>
-                    <p>Email: {authUser.email}</p>
-                    <p>User ID: { authUser.userId}</p>
-                </div>
-            )}
-        </section>
-    )
+          <button
+            type="button"
+            className={css.secondaryButton}
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
 
+        <div className={css.messages}>
+          {isLoading && <p className={css.info}>Loading...</p>}
+          {error && <p className={css.error}>{error}</p>}
+        </div>
+
+        {authUser && (
+          <div className={css.userBox}>
+            <p className={css.userTitle}>User is logged in</p>
+            <p className={css.userText}>Email: {authUser.email}</p>
+            <p className={css.userText}>User ID: {authUser.userId}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+    
 }
