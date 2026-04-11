@@ -1,80 +1,132 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { loginUser, logoutUser, registerUser } from "../../api/auth";
 import type { StoredAuthData } from "../../types/auth";
 import css from "./AuthPanel.module.css";
 
 interface AuthPanelProps {
   authUser: StoredAuthData | null;
-    setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
-    onClose: () => void;
+  setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
+  onClose: () => void;
 }
 
 export default function AuthPanel({
-    authUser,
-    setAuthUser,
-    onClose,
+  authUser,
+  setAuthUser,
+  onClose,
 }: AuthPanelProps) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleRegister = async () => {
-        try {
-            setError("");
-            setIsLoading(true);
-
-            const data = await registerUser(email, password);
-            setAuthUser(data);
-            onClose();
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Register failed");
-            }
-        } finally {
-            setIsLoading(false);
-        }
+  useEffect(() => {
+    const handleWindowKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
     };
 
-    const handleLogin = async () => {
-        try {
-            setError("");
-            setIsLoading(true);
+    window.addEventListener("keydown", handleWindowKeyDown);
+    document.body.style.overflow = "hidden";
 
-            const data = await loginUser(email, password);
-            setAuthUser(data);
-            onClose();
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Login failed");
-            }
-        } finally {
-            setIsLoading(false);
-        }
+    return () => {
+      window.removeEventListener("keydown", handleWindowKeyDown);
+      document.body.style.overflow = "";
     };
+  }, [onClose]);
 
-    const handleLogout = async () => {
-        logoutUser();
-        setAuthUser(null);
-    };
+  const handleCloseClick = () => {
+    onClose();
+  };
 
- return (
-    <section className={css.panel}>
-      <div className={css.card}>
+  const handleBackdropClick = () => {
+    onClose();
+  };
+
+  const handleModalClick = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+  };
+
+  const handleRegister = async () => {
+    try {
+      setError("");
+      setIsLoading(true);
+
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+
+      const data = await registerUser(trimmedEmail, trimmedPassword);
+      setAuthUser(data);
+      onClose();
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Register failed");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      setError("");
+      setIsLoading(true);
+
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+
+      const data = await loginUser(trimmedEmail, trimmedPassword);
+      setAuthUser(data);
+      onClose();
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Login failed");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    logoutUser();
+    setAuthUser(null);
+    onClose();
+  };
+
+  return createPortal(
+    <div className={css.backdrop} onClick={handleBackdropClick}>
+      <section
+        className={css.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        onClick={handleModalClick}
+      >
         <div className={css.top}>
           <div>
-            <h2 className={css.title}>Authorization</h2>
+            <h2 id="auth-modal-title" className={css.title}>
+              Authorization
+            </h2>
             <p className={css.text}>
               Register a new account or log in to continue.
             </p>
           </div>
 
-          <button type="button" className={css.closeButton} onClick={onClose}>
-            Close
+          <button
+            type="button"
+            className={css.closeButton}
+            onClick={handleCloseClick}
+            aria-label="Close modal"
+          >
+            ×
           </button>
         </div>
 
@@ -117,13 +169,15 @@ export default function AuthPanel({
             Login
           </button>
 
-          <button
-            type="button"
-            className={css.secondaryButton}
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          {authUser && (
+            <button
+              type="button"
+              className={css.secondaryButton}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          )}
         </div>
 
         <div className={css.messages}>
@@ -138,8 +192,8 @@ export default function AuthPanel({
             <p className={css.userText}>User ID: {authUser.userId}</p>
           </div>
         )}
-      </div>
-    </section>
+      </section>
+    </div>,
+    document.body
   );
-    
 }

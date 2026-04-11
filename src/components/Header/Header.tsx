@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type { StoredAuthData } from "../../types/auth";
 import AuthPanel from "../AuthPanel/AuthPanel";
 import Container from "../Container/Container";
@@ -22,24 +23,31 @@ export default function Header({ authUser, setAuthUser }: HeaderProps) {
         setIsAuthPanelOpen(false);
     };
 
-    return (
-        <header className={css.header}>
-            <Container>
-                <div className={css.inner}>
-                    <a href="/" className={css.logo}>
-                        psychologists<span className={css.accent}>.services</span>
-                    </a>
-                    <Navigation authUser={authUser} setAuthUser={ setAuthUser} onOpenAuthPanel={openAuthPanel}/>
-                </div>
+     return (
+    <>
+      <header className={css.header}>
+        <Container>
+          <div className={css.inner}>
+            <Link to="/" className={css.logo}>
+              psychologists<span className={css.accent}>.services</span>
+            </Link>
 
-                {isAuthPanelOpen && !authUser && (
-                    <AuthPanel
-                        authUser={authUser}
-                        setAuthUser={setAuthUser}
-                        onClose={closeAuthPanel}
-                    />
-                )}
-            </Container>
-        </header>
-    );
+            <Navigation
+              authUser={authUser}
+              setAuthUser={setAuthUser}
+              onOpenAuthPanel={openAuthPanel}
+            />
+          </div>
+        </Container>
+      </header>
+
+      {isAuthPanelOpen && !authUser && (
+        <AuthPanel
+          authUser={authUser}
+          setAuthUser={setAuthUser}
+          onClose={closeAuthPanel}
+        />
+      )}
+    </>
+  );
 }
