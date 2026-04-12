@@ -2,8 +2,6 @@ import type { AuthResponse, StoredAuthData } from "../types/auth";
 import { clearAuthData, saveAuthData } from "../utils/authStorage";
 
 const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
-console.log("API_KEY: ", API_KEY);
-
 
 async function requestAuth(
     endpoint: "signUp" | "signWithPassword",

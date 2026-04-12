@@ -1,6 +1,5 @@
 import { useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
-import AuthPanel from "../../components/AuthPanel/AuthPanel";
 import css from "./HomePage.module.css";
 import type { StoredAuthData } from "../../types/auth";
 
@@ -9,8 +8,7 @@ type OutletContextType = {
   setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
 };
 
-export default function HomePage() {
-    const { authUser, setAuthUser } = useOutletContext<OutletContextType>();
+export default function HomePage() { useOutletContext<OutletContextType>();
     
     return (
         <section className={ css.hero}>
@@ -35,8 +33,6 @@ export default function HomePage() {
                         <div className={css.card}> Future image / visual block</div>
                     </div>
                 </div>
-
-                <AuthPanel authUser={authUser} setAuthUser={setAuthUser} onClose={()=>{}}/>
             </Container>
         </section>
     );

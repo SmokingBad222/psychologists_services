@@ -7,23 +7,22 @@ import Navigation from "../Navigation/Navigation";
 import css from "./Header.module.css";
 
 interface HeaderProps {
-    authUser: StoredAuthData | null;
-    setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
+  authUser: StoredAuthData | null;
+  setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
 }
 
 export default function Header({ authUser, setAuthUser }: HeaderProps) {
-    
-    const [isAuthPanelOpen, setIsAuthPanelOpen] = useState(false);
+  const [isAuthPanelOpen, setIsAuthPanelOpen] = useState(false);
 
-    const openAuthPanel = () => {
-        setIsAuthPanelOpen(true);
-    };
+  const openAuthPanel = () => {
+    setIsAuthPanelOpen(true);
+  };
 
-    const closeAuthPanel = () => {
-        setIsAuthPanelOpen(false);
-    };
+  const closeAuthPanel = () => {
+    setIsAuthPanelOpen(false);
+  };
 
-     return (
+  return (
     <>
       <header className={css.header}>
         <Container>

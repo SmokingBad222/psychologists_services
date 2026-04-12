@@ -21,25 +21,20 @@ export default function AuthPanel({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const handleWindowKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        event.preventDefault();
         onClose();
       }
     };
 
-    window.addEventListener("keydown", handleWindowKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
 
     return () => {
-      window.removeEventListener("keydown", handleWindowKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
   }, [onClose]);
-
-  const handleCloseClick = () => {
-    onClose();
-  };
 
   const handleBackdropClick = () => {
     onClose();
@@ -49,6 +44,10 @@ export default function AuthPanel({
     event: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
     event.stopPropagation();
+  };
+
+  const handleCloseClick = () => {
+    onClose();
   };
 
   const handleRegister = async () => {
