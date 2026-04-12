@@ -156,6 +156,17 @@
     color: rgba(25, 26, 21, 0.8);
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 @media screen and (max-width: 767px) {
     .backdrop {
         padding: 16px;

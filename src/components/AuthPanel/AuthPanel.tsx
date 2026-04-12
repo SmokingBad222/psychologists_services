@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { loginUser, logoutUser, registerUser } from "../../api/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { loginUser, registerUser } from "../../api/auth";
 import type { StoredAuthData } from "../../types/auth";
+import { authSchema, type AuthFormValues } from "../../schemas/authSchema";
 import css from "./AuthPanel.module.css";
+
 
 interface AuthPanelProps {
   authUser: StoredAuthData | null;
@@ -15,10 +19,23 @@ export default function AuthPanel({
   setAuthUser,
   onClose,
 }: AuthPanelProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
+  const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<AuthFormValues>({
+    resolver: yupResolver(authSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onSubmit",
+  });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -50,55 +67,49 @@ export default function AuthPanel({
     onClose();
   };
 
-  const handleRegister = async () => {
+  const handleRegisterSubmit = async (values: AuthFormValues) => {
     try {
-      setError("");
+      setServerError("");
       setIsLoading(true);
 
-      const trimmedEmail = email.trim();
-      const trimmedPassword = password.trim();
-
-      const data = await registerUser(trimmedEmail, trimmedPassword);
+      const data = await registerUser(values.email.trim(), values.password.trim());
       setAuthUser(data);
+      reset();
       onClose();
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        setServerError(error.message);
       } else {
-        setError("Register failed");
+        setServerError("Register failed");
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleLogin = async () => {
+  const handleLoginSubmit = async (values: AuthFormValues) => {
     try {
-      setError("");
+      setServerError("");
       setIsLoading(true);
 
-      const trimmedEmail = email.trim();
-      const trimmedPassword = password.trim();
-
-      const data = await loginUser(trimmedEmail, trimmedPassword);
+      const data = await loginUser(values.email.trim(), values.password.trim());
       setAuthUser(data);
+      reset();
       onClose();
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        setServerError(error.message);
       } else {
-        setError("Login failed");
+        setServerError("Login failed");
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    logoutUser();
-    setAuthUser(null);
-    onClose();
-  };
+  if (authUser) {
+    return null;
+  }
 
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick}>
@@ -129,68 +140,58 @@ export default function AuthPanel({
           </button>
         </div>
 
-        <div className={css.fields}>
-          <input
-            className={css.input}
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-
-          <input
-            className={css.input}
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-
-        <div className={css.actions}>
-          <button
-            type="button"
-            className={css.primaryButton}
-            onClick={handleRegister}
-            disabled={isLoading}
-          >
-            Register
-          </button>
-
-          <button
-            type="button"
-            className={css.primaryButton}
-            onClick={handleLogin}
-            disabled={isLoading}
-          >
-            Login
-          </button>
-
-          {authUser && (
+        <form className={css.form}>
+          <div className={css.fields}>
+            <div className={css.field}>
+              <input
+                className={css.input}
+                type="email"
+                placeholder="Enter email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className={css.error}>{ errors.email.message}</p>
+              )}
+            </div>
+  
+            <div className={css.field}>
+              <input
+                className={css.input}
+                type="password"
+                placeholder="Enter password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <p className={css.error}>{ errors.password.message}</p>
+              )}
+            </div>
+          </div>
+  
+          <div className={css.actions}>
             <button
               type="button"
-              className={css.secondaryButton}
-              onClick={handleLogout}
+              className={css.primaryButton}
+              onClick={handleSubmit(handleRegisterSubmit)}
+              disabled={isLoading}
             >
-              Logout
+              Register
             </button>
-          )}
-        </div>
-
-        <div className={css.messages}>
-          {isLoading && <p className={css.info}>Loading...</p>}
-          {error && <p className={css.error}>{error}</p>}
-        </div>
-
-        {authUser && (
-          <div className={css.userBox}>
-            <p className={css.userTitle}>User is logged in</p>
-            <p className={css.userText}>Email: {authUser.email}</p>
-            <p className={css.userText}>User ID: {authUser.userId}</p>
+  
+            <button
+              type="button"
+              className={css.primaryButton}
+              onClick={handleSubmit(handleLoginSubmit)}
+              disabled={isLoading}
+            >
+              Login
+            </button>
           </div>
-        )}
+  
+          <div className={css.messages}>
+            {isLoading && <p className={css.info}>Loading...</p>}
+            {serverError && <p className={css.error}>{serverError}</p>}
+          </div>
+        </form>
       </section>
     </div>,
     document.body
