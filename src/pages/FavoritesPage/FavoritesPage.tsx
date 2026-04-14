@@ -1,28 +1,27 @@
+import { Link, Navigate, useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
-import { getAuthData } from "../../utils/authStorage";
+import type { StoredAuthData } from "../../types/auth";
 
+type OutletContextType = {
+    authUser: StoredAuthData | null;
+    setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
+}
 
 export default function FavoritesPage() {
+    const { authUser } = useOutletContext<OutletContextType>();
 
-    const authData = getAuthData();
-
-    if (!authData) {
-        return (
-            <section>
-                <Container>
-                    <h1>Favorites</h1>
-                    <p>This page available only for authorized users</p>
-                </Container>
-            </section>
-        );
+    if (!authUser) {
+        return <Navigate to="/" replace />
     }
 
     return (
         <Container>
             <section>
                 <h1>Favorites</h1>
-                <p>Authorized user: { authData.email}</p>
+                <p>Authorized user: { authUser.email}</p>
                 <p>Your favorite psychologists will be here.</p>
+
+                <Link to="/psychologists">Go to psychologists</Link>
             </section>
         </Container>
     );
