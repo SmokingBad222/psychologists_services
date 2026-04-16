@@ -1,21 +1,52 @@
-const FAVORITES_KEY = "favorite-psychologists";
 
-export function getFavoriteIds(): string[] {
-    const savedData = localStorage.getItem(FAVORITES_KEY);
+const FAVORITES_STORAGE_KEY = "favorite-psychologists";
+
+function buildFavoritesKey(userId: string): string {
+    return `${FAVORITES_STORAGE_KEY}:${userId}`;
+}
+
+export function getFavoriteIds(userId: string): string[] {
+    const storageKey = buildFavoritesKey(userId);
+    const savedData = localStorage.getItem(storageKey);
 
     if (!savedData) {
         return [];
     }
 
     try {
-        const parsedData = JSON.parse(savedData);
+        const parsedData = JSON.parse(savedData) as string[];
         
-        return Array.isArray(parsedData) ? parsedData : [];
+        if (!Array.isArray(parsedData)) {
+            return [];
+        }
+        return parsedData;
     } catch {
         return [];
     }
 }
 
-export function saveFavoriteIds(ids: string[]): void {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(ids));
+export function saveFavoriteIds(userId: string, favoriteIds: string[]): void {
+    const storageKey = buildFavoritesKey(userId);
+    localStorage.setItem(storageKey, JSON.stringify(favoriteIds));
+}
+
+export function isFavorite(userId: string, psychologistId: string): boolean {
+    const favoriteIds = getFavoriteIds(userId);
+    return favoriteIds.includes(psychologistId)
+}
+
+export function toggleFavorite(userId: string, psychologistId: string): string[] {
+    const favoriteIds = getFavoriteIds(userId);
+
+    const updatedFavorites = favoriteIds.includes(psychologistId)
+        ? favoriteIds.filter((id) => id !== psychologistId)
+        : [...favoriteIds, psychologistId];
+    
+    saveFavoriteIds(userId, updatedFavorites);
+    return updatedFavorites;
+}
+
+export function clearFavorites(userId: string): void {
+    const storageKey = buildFavoritesKey(userId);
+    localStorage.removeItem(storageKey);
 }
