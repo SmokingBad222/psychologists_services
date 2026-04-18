@@ -5,7 +5,7 @@ import css from "./PsychologistCard.module.css";
 interface PsychologistCardProps {
     psychologist: Psychologist;
     isFavorite: boolean;
-    onToggleFavorite: (psychologistIds: string) => void;
+    onToggleFavorite: (psychologistId: string) => void;
 }
 
 export default function PsychologistCard({
@@ -13,7 +13,8 @@ export default function PsychologistCard({
     isFavorite,
     onToggleFavorite,
 }: PsychologistCardProps) {
-  const {
+    const {
+    id,
     name,
     avatar_url,
     experience,
@@ -97,7 +98,10 @@ export default function PsychologistCard({
                 <button
                     type="button"
                     className={isFavorite ? css.buttonActive : css.buttonSecondary}
-                    onClick={() => onToggleFavorite(psychologist.id)}            
+                    onClick={() => onToggleFavorite(id)}
+                    aria-label={
+                        isFavorite ? "Remove psychologist from favorites" : "Add psychologist to favorites"
+                    }
                 >
                     {isFavorite ? "Remove from favorites" : "Add to favorites"}
                 </button>
