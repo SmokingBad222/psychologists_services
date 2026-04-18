@@ -44,6 +44,14 @@
     cursor: pointer;
 }
 
+.authMessage {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #d94b4b;
+}
+
 .loadMoreWrapper {
     display: flex;
     justify-content: center;
