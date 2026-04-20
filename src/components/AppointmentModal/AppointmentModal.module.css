@@ -1,0 +1,134 @@
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: rgba(25, 26, 21, 0.6);
+}
+
+.modal {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 30px;
+    padding: 48px;
+    background-color: #fbfbfb;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.12);
+}
+
+.top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.title {
+    margin: 0 0 12px;
+    font-size: 32px;
+    line-height: 2.2;
+    font-weight: 600;
+    color: #191a15;
+}
+
+.text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+    color: rgba(25, 26, 21, 0.6);
+}
+
+.closeButton {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: none;
+    background-color: transparent;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: #191a15;
+}
+
+.psychologistBox {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.psychologistLabel {
+    margin: 0 0 4px;
+    font-size: 12px;
+    line-height: 1.2;
+    color: rgba(25, 26, 21, 0.5);
+}
+
+.psychologistName {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #191a15;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.input::placeholder, 
+.textarea::placeholder {
+    color: rgba(25, 26, 21, 0.5)
+}
+
+.submitButton {
+    height: 52px;
+    border: none;
+    border-radius: 30px;
+    background-color: #54be96;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fbfbfb;
+    cursor: pointer;
+}
+
+.submitButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.error {
+    margin: 0;
+    font-size: 14px;
+    color: #54be96;
+}
+
+@media screen and (max-width: 767px) {
+    .modal {
+        padding: 32px 20px;
+        border-radius: 24px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+}
