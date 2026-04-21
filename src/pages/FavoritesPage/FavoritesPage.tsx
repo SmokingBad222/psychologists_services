@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Link, Navigate, useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
-import type { StoredAuthData } from "../../types/auth";
-import { getFavoriteIds } from "../../utils/favorites";
+import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
 import { psychologists } from "../../data/psychologists";
+import type { StoredAuthData } from "../../types/auth";
+import { getFavoriteIds, saveFavoriteIds } from "../../utils/favorites";
+import css from "./FavoritesPage.module.css"
 
 type OutletContextType = {
     authUser: StoredAuthData | null;
@@ -31,70 +34,58 @@ type Psychologist = {
 
 export default function FavoritesPage() {
     const { authUser } = useOutletContext<OutletContextType>();
-
+    const [favoriteIds, setFavoriteIds] = useState<string[]>(authUser ?
+        getFavoriteIds(authUser.userId) : []
+    );
     if (!authUser) {
         return <Navigate to="/" replace />
     }
 
-    const favoriteIds = getFavoriteIds(authUser.userId);
     const typedPsychologists = psychologists as Psychologist[];
     
     const favoritePsychologists = typedPsychologists.filter((psychologists) =>
             favoriteIds.includes(psychologists.id)
         );
 
-    
+    const handleToggleFavorite = (psychologistId: string) => {
+        const isAlreadyFavorite = favoriteIds.includes(psychologistId);
+
+        const nextFavoriteIds = isAlreadyFavorite
+            ? favoriteIds.filter((id) => id !== psychologistId)
+            : [...favoriteIds, psychologistId];
+        
+        saveFavoriteIds(authUser.userId, nextFavoriteIds);
+        setFavoriteIds(nextFavoriteIds);
+    };
 
     return (
-        <section>
+        <section className={css.section}>
             <Container>
-                <h1>Favorites</h1>
-                <p>Authorized user: { authUser.email}</p>
-                
-                {favoritePsychologists.length === 0 ? (
+                <div className={css.top}>
                     <div>
-                        <p>You do not have favorite psychologists yet.</p>
-                        <Link to="/psychologists">Go to psychologists</Link>
+                        <h1 className={css.title}>Favorite</h1>
+                        <p className={css.text}>
+                            Here you can see psychologists you added to favorites. 
+                        </p>
+                    </div>
+                </div>
+
+                {favoritePsychologists.length === 0 ? (
+                    <div className={css.emptyState}>
+                        <p className={css.emptyText}>
+                            You do not have favorite psychologists yet.
+                        </p>
+
+                        <Link to="/psychologists" className={css.link}>
+                            Go to psychologists
+                        </Link>
                     </div>
                 ) : (
-                        <ul>
-                            {favoritePsychologists.map((psychologists) => (
-                                <li key={psychologists.id}>
-                                    <article>
-                                        <img
-                                        src={psychologists.avatar_url}
-                                            alt={psychologists.name}
-                                            width="96"
-                                            height="96"
-                                        />
-
-                                        <h2>{psychologists.name}</h2>
-                                        
-                                        <p>
-                                            <strong>Experience:</strong> {psychologists.experience}
-                                        </p>
-
-                                        <p>
-                                            <strong>Specialization:</strong>{psychologists.specialization}
-                                        </p>
-
-                                        <p>
-                                            <strong>Rating:</strong> {psychologists.rating}
-                                        </p>
-
-                                        <p>
-                                            <strong>Price per hour:</strong>{psychologists.price_per_hour}
-                                        </p>
-
-                                        <p>
-                                            <strong>Initial consultation:</strong>{" "} {psychologists.initial_consultation}
-                                        </p>
-
-                                        <p>{ psychologists.about}</p>
-                                    </article>
-                                </li>
-                            ))}
-                        </ul>
+                        <PsychologistsList 
+                            items={favoritePsychologists}
+                            favoriteIds={favoriteIds}
+                            onToggleFavorite={handleToggleFavorite}
+                        />
                 )}
             </Container>
         </section>
