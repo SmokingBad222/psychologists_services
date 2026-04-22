@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, Navigate, useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
@@ -34,18 +34,27 @@ type Psychologist = {
 
 export default function FavoritesPage() {
     const { authUser } = useOutletContext<OutletContextType>();
-    const [favoriteIds, setFavoriteIds] = useState<string[]>(authUser ?
-        getFavoriteIds(authUser.userId) : []
-    );
+    const [favoriteVersion, setFavoriteVersion] = useState(0);
+
+    const userId = authUser?.userId ?? "";
+
+    const favoriteIds = useMemo(() => {
+        if(!authUser) {
+            return [];
+        }
+
+        return getFavoriteIds(userId);
+    }, [userId, favoriteVersion]);
+
+    const typedPsychologists = psychologists as Psychologist[];
+    const favoritePsychologists = useMemo(() => {
+        return typedPsychologists.filter((psychologist) => favoriteIds.includes(psychologist.id));
+    }, [typedPsychologists, favoriteIds]);
+
+
     if (!authUser) {
         return <Navigate to="/" replace />
     }
-
-    const typedPsychologists = psychologists as Psychologist[];
-    
-    const favoritePsychologists = typedPsychologists.filter((psychologists) =>
-            favoriteIds.includes(psychologists.id)
-        );
 
     const handleToggleFavorite = (psychologistId: string) => {
         const isAlreadyFavorite = favoriteIds.includes(psychologistId);
@@ -55,7 +64,7 @@ export default function FavoritesPage() {
             : [...favoriteIds, psychologistId];
         
         saveFavoriteIds(authUser.userId, nextFavoriteIds);
-        setFavoriteIds(nextFavoriteIds);
+        setFavoriteVersion((prev) => prev + 1);
     };
 
     return (
