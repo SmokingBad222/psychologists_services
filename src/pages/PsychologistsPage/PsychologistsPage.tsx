@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
 import LoadMoreButton from "../../components/LoadMoreButton/LoadMoreButton";
-import { psychologists } from "../../data/psychologists";
 import css from "./PsychologistsPage.module.css";
 import { sortPsychologists } from "../../utils/sortPsychologists";
-import type { SortOption } from "../../types/psychologist";
+import type { Psychologist, SortOption } from "../../types/psychologist";
 import { getFavoriteIds, saveFavoriteIds } from "../../utils/favorites";
 import type { StoredAuthData } from "../../types/auth";
+import { fetchPsychologistsFromFirebase } from "../../api/psychologists";
 
 type OutletContextType = {
   authUser: StoredAuthData | null;
@@ -21,8 +21,12 @@ export default function PsychologistsPage() {
   const [sortOption, setSortOption] = useState<SortOption>("name-asc");
   const [visibleCount, setVisibleCount] = useState(3);
   const [authMessage, setAuthMessage] = useState("");
-
   const [favoritesVersion, setFavoritesVersion] = useState(0);
+
+  const [items, setItems] = useState<Psychologist[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const userId = authUser?.userId ?? "";
 
@@ -34,7 +38,29 @@ export default function PsychologistsPage() {
     return getFavoriteIds(userId);
   }, [userId, favoritesVersion]);
 
-  const sortedPsychologists = sortPsychologists(psychologists, sortOption);
+  useEffect(() => {
+    const loadPsychologists = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const data = await fetchPsychologistsFromFirebase();
+        setItems(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load psychologists.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPsychologists();
+  }, []);
+
+  const sortedPsychologists = sortPsychologists(items, sortOption);
   const visiblePsychologists = sortedPsychologists.slice(0, visibleCount);
   const hasMore = visibleCount < sortedPsychologists.length;
 
@@ -57,7 +83,6 @@ export default function PsychologistsPage() {
       : [...favoriteIds, psychologistId];
 
     saveFavoriteIds(authUser.userId, nextFavoriteIds);
-
     setFavoritesVersion((prev) => prev + 1);
   };
 
@@ -97,16 +122,28 @@ export default function PsychologistsPage() {
 
         {authMessage && <p className={css.authMessage}>{authMessage}</p>}
 
-        <PsychologistsList
-          items={visiblePsychologists}
-          favoriteIds={favoriteIds}
-          onToggleFavorite={handleToggleFavorite}
-        />
+        {isLoading && <p className={css.status}>Loading psychologists...</p>}
 
-        {hasMore && (
-          <div className={css.loadMoreWrapper}>
-            <LoadMoreButton onClick={handleLoadMore} />
-          </div>
+        {error && <p className={css.error}>{error}</p>}
+
+        {!isLoading && !error && visiblePsychologists.length > 0 && (
+          <>
+            <PsychologistsList
+              items={visiblePsychologists}
+              favoriteIds={favoriteIds}
+              onToggleFavorite={handleToggleFavorite}
+            />
+
+            {hasMore && (
+              <div className={css.loadMoreWrapper}>
+                <LoadMoreButton onClick={handleLoadMore} />
+              </div>
+            )}
+          </>
+        )}
+
+        {!isLoading && !error && visiblePsychologists.length === 0 && (
+          <p className={css.status}>No psychologists found.</p>
         )}
       </Container>
     </section>

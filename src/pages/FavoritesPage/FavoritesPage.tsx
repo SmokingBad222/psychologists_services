@@ -1,40 +1,44 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import PsychologistsList from "../../components/PsychologistsList/PsychologistsList";
-import { psychologists } from "../../data/psychologists";
+import { fetchPsychologistsFromFirebase } from "../../api/psychologists";
 import type { StoredAuthData } from "../../types/auth";
 import { getFavoriteIds, saveFavoriteIds } from "../../utils/favorites";
 import css from "./FavoritesPage.module.css"
+import type { Psychologist } from "../../types/psychologist";
 
 type OutletContextType = {
     authUser: StoredAuthData | null;
     setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
 }
 
-type Review = {
-    reviewer: string;
-    rating: number;
-    comment: string;
-};
+// type Review = {
+//     reviewer: string;
+//     rating: number;
+//     comment: string;
+// };
 
-type Psychologist = {
-    id: string;
-    name: string;
-    avatar_url: string;
-    experience: string;
-    reviews: Review[];
-    price_per_hour: number;
-    rating: number;
-    license: string;
-    specialization: string;
-    initial_consultation: string;
-    about: string;
-};
+// type Psychologist = {
+//     id: string;
+//     name: string;
+//     avatar_url: string;
+//     experience: string;
+//     reviews: Review[];
+//     price_per_hour: number;
+//     rating: number;
+//     license: string;
+//     specialization: string;
+//     initial_consultation: string;
+//     about: string;
+// };
 
 export default function FavoritesPage() {
     const { authUser } = useOutletContext<OutletContextType>();
     const [favoriteVersion, setFavoriteVersion] = useState(0);
+    const [items, setItems] = useState<Psychologist[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const userId = authUser?.userId ?? "";
 
@@ -44,12 +48,34 @@ export default function FavoritesPage() {
         }
 
         return getFavoriteIds(userId);
-    }, [userId, favoriteVersion]);
+    }, [userId, favoriteVersion, authUser]);
 
-    const typedPsychologists = psychologists as Psychologist[];
+    useEffect(() => {
+        const loadPsychologists = async () => {
+            try {
+                setIsLoading(true);
+                setError("");
+
+                const data = await fetchPsychologistsFromFirebase();
+                setItems(data);
+            } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Failed to load favorite psychologists.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPsychologists();
+    }, []);
+    
+
     const favoritePsychologists = useMemo(() => {
-        return typedPsychologists.filter((psychologist) => favoriteIds.includes(psychologist.id));
-    }, [typedPsychologists, favoriteIds]);
+        return items.filter((psychologist) => favoriteIds.includes(psychologist.id));
+    }, [items, favoriteIds]);
 
 
     if (!authUser) {
@@ -79,7 +105,11 @@ export default function FavoritesPage() {
                     </div>
                 </div>
 
-                {favoritePsychologists.length === 0 ? (
+                {isLoading && <p className={css.status}>Loading favorite psychologists...</p>}
+                
+                {error && <p className={css.error}>{ error}</p> }
+
+                {!isLoading && !error && favoritePsychologists.length === 0 ? (
                     <div className={css.emptyState}>
                         <p className={css.emptyText}>
                             You do not have favorite psychologists yet.
@@ -89,13 +119,13 @@ export default function FavoritesPage() {
                             Go to psychologists
                         </Link>
                     </div>
-                ) : (
-                        <PsychologistsList 
+                ) : null}
+                        {!isLoading && !error &&favoritePsychologists.length > 0 && (<PsychologistsList 
                             items={favoritePsychologists}
                             favoriteIds={favoriteIds}
                             onToggleFavorite={handleToggleFavorite}
                         />
-                )}
+                        )}
             </Container>
         </section>
     );
