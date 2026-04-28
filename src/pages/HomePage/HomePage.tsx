@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import css from "./HomePage.module.css";
 import type { StoredAuthData } from "../../types/auth";
@@ -25,8 +25,8 @@ export default function HomePage() { useOutletContext<OutletContextType>();
                             We help you find a specialist for support, growth, balance and meaningful change in life.
                         </p>
 
-                        <a href="/psychologists" className={css.link}>Get started
-                        </a>
+                        <Link to="/psychologists" className={css.link}>Get started
+                        </Link>
                     </div>
 
                     <div className={css.visual}>

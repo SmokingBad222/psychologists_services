@@ -13,25 +13,6 @@ type OutletContextType = {
     setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
 }
 
-// type Review = {
-//     reviewer: string;
-//     rating: number;
-//     comment: string;
-// };
-
-// type Psychologist = {
-//     id: string;
-//     name: string;
-//     avatar_url: string;
-//     experience: string;
-//     reviews: Review[];
-//     price_per_hour: number;
-//     rating: number;
-//     license: string;
-//     specialization: string;
-//     initial_consultation: string;
-//     about: string;
-// };
 
 export default function FavoritesPage() {
     const { authUser } = useOutletContext<OutletContextType>();
@@ -98,7 +79,7 @@ export default function FavoritesPage() {
             <Container>
                 <div className={css.top}>
                     <div>
-                        <h1 className={css.title}>Favorite</h1>
+                        <h1 className={css.title}>Favorites</h1>
                         <p className={css.text}>
                             Here you can see psychologists you added to favorites. 
                         </p>
