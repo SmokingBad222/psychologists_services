@@ -6,11 +6,16 @@ import css from "./Navigation.module.css";
 interface NavigationProps {
   authUser: StoredAuthData | null;
   setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
-  onOpenAuthPanel: () => void;
+  onOpenLoginPanel: () => void;
+  onOpenRegisterPanel: () => void;
 }
 
 export default function Navigation({
-    authUser, setAuthUser, onOpenAuthPanel }: NavigationProps) {
+  authUser,
+  setAuthUser,
+  onOpenLoginPanel,
+  onOpenRegisterPanel,
+}: NavigationProps) {
     const isLoggedIn = Boolean(authUser);
 
   const buildLinkClass = ({ isActive }: { isActive: boolean }) => {
@@ -25,15 +30,51 @@ export default function Navigation({
     return (
         <nav className={css.nav}>
 
-          <NavLink to='/' className={buildLinkClass}>Home</NavLink>
+        <div className={ css.links}>
+          <NavLink to='/' className={buildLinkClass}>
+            Home
+          </NavLink>
+  
+          <NavLink to='/psychologists' className={buildLinkClass}>
+            Psychologists
+          </NavLink>
+  
+          {isLoggedIn && (
+            <NavLink to='/favorites' className={buildLinkClass}>
+            Favorites
+            </NavLink>
+          )}
+        </div>
 
-          <NavLink to='/psychologists' className={buildLinkClass}>Psychologists</NavLink>
-
-          <NavLink to='/favorites' className={buildLinkClass}>Favorites</NavLink>
-
-          {isLoggedIn ? (<button type="button" className={css.authButton} onClick={handleLogout}>Logout</button>
-          ) : (
-          <button type="button" className={css.authButton} onClick={onOpenAuthPanel}>Login</button>)}
+        <div className={ css.actions}>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              className={css.authButton}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            ) : (
+            <>
+              <button
+                type="button"
+                className={css.authButton}
+                onClick={onOpenLoginPanel}
+              >
+                Log In
+              </button>
+                
+                <button
+                  type="button"
+                  className={css.primaryButton}
+                  onClick={onOpenRegisterPanel}
+                >
+                Registration
+              </button>
+            </>
+          )}
+          </div>
         </nav>
     );
 }

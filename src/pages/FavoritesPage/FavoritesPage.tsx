@@ -78,7 +78,7 @@ export default function FavoritesPage() {
         <section className={css.section}>
             <Container>
                 <div className={css.top}>
-                    <div>
+                    <div className={ css.heading}>
                         <h1 className={css.title}>Favorites</h1>
                         <p className={css.text}>
                             Here you can see psychologists you added to favorites. 
@@ -90,17 +90,19 @@ export default function FavoritesPage() {
                 
                 {error && <p className={css.error}>{ error}</p> }
 
-                {!isLoading && !error && favoritePsychologists.length === 0 ? (
+                {!isLoading && !error && favoritePsychologists.length === 0 && (
                     <div className={css.emptyState}>
+                        <p className={css.emptyTitle}>No favorites yet</p>
                         <p className={css.emptyText}>
-                            You do not have favorite psychologists yet.
+                            Add psychologists you like to favorites, and they will appear
+              here.
                         </p>
 
                         <Link to="/psychologists" className={css.link}>
                             Go to psychologists
                         </Link>
                     </div>
-                ) : null}
+                ) }
                         {!isLoading && !error &&favoritePsychologists.length > 0 && (<PsychologistsList 
                             items={favoritePsychologists}
                             favoriteIds={favoriteIds}

@@ -26,8 +26,12 @@
     margin-bottom: 40px;
 }
 
+.heading {
+    max-width: 438px;
+}
+
 .title {
-    margin: 0 0 14px;
+    margin: 0 0 20px;
     font-size: 40px;
     line-height: 1.2;
     font-weight: 500;
@@ -35,7 +39,7 @@
 }
 
 .text {
-    margin: 0;
+    max-width: 438px;
     font-size: 16px;
     line-height: 1.25;
     color: rgba(25, 26, 21, 0.5);
@@ -53,8 +57,12 @@
     background-color: transparent;
     font-size: 28px;
     line-height: 1;
-    cursor: pointer;
     color: #191a15;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
 }
 
 .fields {
@@ -62,6 +70,12 @@
     flex-direction: column;
     gap: 18px;
     margin-bottom: 40px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .input {
@@ -82,23 +96,21 @@
 }
 
 .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-bottom: 20px;
 }
 
 .primaryButton {
-    min-width: 120px;
-    height: 48px;
-    padding: 14px 24px;
+    width: 100%;
+    height: 52px;
+    padding: 16px;
     border: none;
     border-radius: 30px;
     background-color: #54be96;
     font-size: 16px;
+    line-height: 1.25;
     font-weight: 500;
     color: #fbfbfb;
-    cursor: pointer;
+    transition: opacity 0.2s ease;
 }
 
 .primaryButton:disabled {
@@ -106,17 +118,9 @@
     cursor: not-allowed;
 }
 
-.secondaryButton {
-    min-width: 120px;
-    height: 48px;
-    padding: 14px 24px;
-    border: 1px solid #54be96;
-    border-radius: 30px;
-    background-color: transparent;
-    font-size: 16px;
-    font-weight: 500;
-    color: #191a15;
-    cursor: pointer;
+.primaryButton:hover,
+.primaryButton:focus {
+    opacity: 0.9;
 }
 
 .messages {
@@ -124,47 +128,13 @@
 }
 
 .info {
-    margin: 0;
     font-size: 14px;
     color: #54be96;
 }
 
 .error {
-    margin: 0;
     font-size: 14px;
     color: #d94b4b;
-}
-
-.userBox {
-    margin-top: 20px;
-    padding: 16px;
-    border-radius: 16px;
-    background-color: rgba(84, 190, 150, 0.08);
-}
-
-.userTitle {
-    margin: 0 0 8px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #191a15;
-}
-
-.userText {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-    color: rgba(25, 26, 21, 0.8);
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-}
-
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
 }
 
 @media screen and (max-width: 767px) {
@@ -179,15 +149,7 @@
     }
 
     .title {
-        font-size: 28px;
+        font-size: 32px;
     }
 
-    .actions {
-        flex-direction: column;
-    }
-
-    .primaryButton,
-    .secondaryButton {
-        width: 100%;
-    }
 }

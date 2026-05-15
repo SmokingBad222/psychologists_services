@@ -8,8 +8,8 @@ type OutletContextType = {
   setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
 };
 
-export default function HomePage() { useOutletContext<OutletContextType>();
-    
+export default function HomePage() {     useOutletContext<OutletContextType>();
+
     return (
         <section className={ css.hero}>
             <Container>
@@ -26,11 +26,22 @@ export default function HomePage() { useOutletContext<OutletContextType>();
                         </p>
 
                         <Link to="/psychologists" className={css.link}>Get started
+                            <span className={ css.linkArrow}>↗</span>
                         </Link>
                     </div>
 
                     <div className={css.visual}>
                         <div className={css.card}> Future image / visual block</div>
+                        <div className={css.badge}>
+                            <div className={css.badgeIcon}>✓</div>
+                            <div className={css.badgeText}>
+                                <p className={css.badgeLabel}>Experienced psychologists</p>
+                                <p className={ css.badgeNumber}>15,000</p>
+                            </div>
+                        </div>
+
+                        <div className={css.questionMark}>?</div>
+                        <div className={ css.noteIcon}>♪</div>
                     </div>
                 </div>
             </Container>

@@ -12,16 +12,20 @@ interface AuthPanelProps {
   authUser: StoredAuthData | null;
   setAuthUser: React.Dispatch<React.SetStateAction<StoredAuthData | null>>;
   onClose: () => void;
+  mode: "login" | "register";
 }
 
 export default function AuthPanel({
   authUser,
   setAuthUser,
   onClose,
+  mode,
 }: AuthPanelProps) {
 
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const isLoginMode = mode === "login";
 
   const {
     register,
@@ -67,12 +71,15 @@ export default function AuthPanel({
     onClose();
   };
 
-  const handleRegisterSubmit = async (values: AuthFormValues) => {
+  const handleSubmitForm = async (values: AuthFormValues) => {
     try {
       setServerError("");
       setIsLoading(true);
 
-      const data = await registerUser(values.email.trim(), values.password.trim());
+      const data = isLoginMode
+        ? await loginUser(values.email.trim(), values.password.trim())
+        : await registerUser(values.email.trim(), values.password.trim());
+      
       setAuthUser(data);
       reset();
       onClose();
@@ -80,27 +87,7 @@ export default function AuthPanel({
       if (error instanceof Error) {
         setServerError(error.message);
       } else {
-        setServerError("Register failed");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLoginSubmit = async (values: AuthFormValues) => {
-    try {
-      setServerError("");
-      setIsLoading(true);
-
-      const data = await loginUser(values.email.trim(), values.password.trim());
-      setAuthUser(data);
-      reset();
-      onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        setServerError(error.message);
-      } else {
-        setServerError("Login failed");
+        setServerError(isLoginMode ? "Login failed" : "Register failed");
       }
     } finally {
       setIsLoading(false);
@@ -110,6 +97,7 @@ export default function AuthPanel({
   if (authUser) {
     return null;
   }
+
 
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick}>
@@ -121,12 +109,14 @@ export default function AuthPanel({
         onClick={handleModalClick}
       >
         <div className={css.top}>
-          <div>
+          <div className={ css.heading}>
             <h2 id="auth-modal-title" className={css.title}>
-              Authorization
+              {isLoginMode ? "Log In" : "Registration"}
             </h2>
+
             <p className={css.text}>
-              Register a new account or log in to continue.
+              { isLoginMode ? "Welcome back! Please enter your credentials to access your account and continue your search for a psychologist."
+                : "Thank you for your interest in our platform! In order to register, we need some information. Please provide us with the following information."}
             </p>
           </div>
 
@@ -140,13 +130,13 @@ export default function AuthPanel({
           </button>
         </div>
 
-        <form className={css.form}>
+        <form className={css.form} onSubmit={handleSubmit(handleSubmitForm)}>
           <div className={css.fields}>
             <div className={css.field}>
               <input
                 className={css.input}
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email"
                 {...register("email")}
               />
               {errors.email && (
@@ -158,7 +148,7 @@ export default function AuthPanel({
               <input
                 className={css.input}
                 type="password"
-                placeholder="Enter password"
+                placeholder="Password"
                 {...register("password")}
               />
               {errors.password && (
@@ -169,21 +159,11 @@ export default function AuthPanel({
   
           <div className={css.actions}>
             <button
-              type="button"
+              type="submit"
               className={css.primaryButton}
-              onClick={handleSubmit(handleRegisterSubmit)}
               disabled={isLoading}
             >
-              Register
-            </button>
-  
-            <button
-              type="button"
-              className={css.primaryButton}
-              onClick={handleSubmit(handleLoginSubmit)}
-              disabled={isLoading}
-            >
-              Login
+              {isLoginMode ? "Log In" : "Sign Up"}
             </button>
           </div>
   

@@ -1,18 +1,31 @@
 .nav {
     display: flex;
     align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+    gap: 32px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .link {
-    font-weight: 500;
     text-decoration: none;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 400;
     color: #191a15;
     transition: color 0.2s ease;
 }
 
-link:hover, .link:focus {
+.link:hover, .link:focus {
     color: #54be96;
 }
 
@@ -21,17 +34,68 @@ link:hover, .link:focus {
 }
 
 .authButton {
-    border: 1px solid #54be96;
-    border-radius: 999px;
+    min-width: 95px;
+    height: 48px;
+    padding: 14px 24px;
+    border: 1px solid rgba(25, 26, 21, 0.2);
+    border-radius: 30px;
     background-color: transparent;
-    padding: 8px 16px;
+    font-size: 16px;
+    line-height: 1.25;
     color: #191a15;
-    font: inherit;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2 ease;
+    transition: 
+        border-color 0.2s ease, 
+        background-color 0.2s ease,
+        color 0.2 ease;
 }
 
-.authButton:hover, .authButton:focus {
+.authButton:hover, 
+.authButton:focus {
     background-color: #54be96;
     color: #fbfbfb;
+}
+
+.primaryButton {
+    min-width: 171px;
+    height: 48px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 30px;
+    background-color: #54be96;
+    font-size: 16px;
+    line-height: 1.25;
+    color: #fbfbfb;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.primaryButton:hover,
+.primaryButton:focus {
+    opacity: 0.9;
+} 
+
+@media screen and (max-width: 767px) {
+    .nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .actions {
+        justify-content: center;
+        font-weight: wrap;
+        gap: 8px;
+    }
+
+    .authButton,
+    .primaryButton {
+        min-width: 140px;
+        padding: 12px 20px;
+    }
 }

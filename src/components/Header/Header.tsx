@@ -13,10 +13,17 @@ interface HeaderProps {
 
 export default function Header({ authUser, setAuthUser }: HeaderProps) {
   const [isAuthPanelOpen, setIsAuthPanelOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
-  const openAuthPanel = () => {
+  const openLoginPanel = () => {
+    setAuthMode("login");
     setIsAuthPanelOpen(true);
   };
+
+  const openRegisterPanel = () => {
+    setAuthMode("register");
+    setIsAuthPanelOpen(true);
+  }
 
   const closeAuthPanel = () => {
     setIsAuthPanelOpen(false);
@@ -34,7 +41,8 @@ export default function Header({ authUser, setAuthUser }: HeaderProps) {
             <Navigation
               authUser={authUser}
               setAuthUser={setAuthUser}
-              onOpenAuthPanel={openAuthPanel}
+              onOpenLoginPanel={openLoginPanel}
+              onOpenRegisterPanel={openRegisterPanel}
             />
           </div>
         </Container>
@@ -45,6 +53,7 @@ export default function Header({ authUser, setAuthUser }: HeaderProps) {
           authUser={authUser}
           setAuthUser={setAuthUser}
           onClose={closeAuthPanel}
+          mode={authMode}
         />
       )}
     </>
