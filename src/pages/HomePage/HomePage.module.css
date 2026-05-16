@@ -306,3 +306,54 @@
         transform: none;
     }
 }
+
+/* MOBILE */
+
+@media screen and (max-width: 360px) {
+    .title {
+        font-size: 28px;
+        line-height: 1;
+    }
+
+    .text {
+        font-size: 15px;
+    }
+
+    .link {
+        min-width: 150px;
+        height: 48px;
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    .visual {
+        min-height: 240px;
+        padding-bottom: 72px;
+    }
+
+    .card {
+        height: 260px;
+        font-size: 15px;
+    }
+
+    .badge {
+        min-width: 200px;
+        padding: 14px;
+        gap: 10px;
+        border-radius: 16px;
+    }
+
+    .badgeIcon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .badgeLabel {
+        font-size: 11px;
+    }
+
+    .badgeNumber {
+        font-size: 18px;
+    }
+}

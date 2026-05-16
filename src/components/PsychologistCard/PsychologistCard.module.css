@@ -209,6 +209,7 @@
 
 .readMoreButton {
     padding: 0;
+    border: none;
     background-color: transparent;
     font-size: 16px;
     line-height: 1.5;
@@ -216,6 +217,7 @@
     color: #191a15;
     text-decoration: underline;
     text-underline-offset: 2px;
+    cursor: pointer;
 }
 
 .button {
@@ -358,7 +360,7 @@
     }
 
     .sideInfo {
-        gap: 12px;
+        gap: 8px;
         flex-wrap: wrap;
     }
 
@@ -403,5 +405,34 @@
     .readMoreButton {
         align-self: flex-start;
         font-size: 15px;
+    }
+}
+
+@media  screen and (max-width: 360px) {
+    .sideInfo {
+        gap: 6px;
+    }
+
+    .rating, 
+    .price {
+        font-size: 14px;
+    }
+
+    .name {
+        font-size: 18px;
+    }
+
+    .about,
+    .reviewComment {
+        font-size: 14px;
+    }
+
+    .button {
+        height: 44px;
+        font-size: 15px;
+    }
+
+    .readMoreButton {
+        font-size: 14px;
     }
 }

@@ -136,7 +136,7 @@ export default function PsychologistCard({
                     <div className={css.actions}>
                     <button
                         type="button"
-                        className={css.button}
+                        className={css.readMoreButton}
                         onClick={handleToggleDetails}>
                             {isExpanded ? "Show less" : "Read more"}
                         </button>

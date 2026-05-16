@@ -29,12 +29,11 @@
         min-height: auto;
         flex-direction: column;
         align-items: stretch;
-        gap: 8px;
-        padding: 8px 0;
+        gap: 16px;
+        padding: 16px 0;
     }
 
     .logo {
-        font-size: 18px;
         text-align: center;
     }
 }
