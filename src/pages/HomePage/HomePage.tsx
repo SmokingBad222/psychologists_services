@@ -31,7 +31,12 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                     </div>
 
                     <div className={css.visual}>
-                        <div className={css.card}> Future image / visual block</div>
+                        <img
+                            className={css.heroImage}
+                            src="/public/images/hero-psychologist.png"
+                            alt="Psychologist during a consultation"
+                        />
+
                         <div className={css.badge}>
                             <div className={css.badgeIcon}>✓</div>
                             <div className={css.badgeText}>
