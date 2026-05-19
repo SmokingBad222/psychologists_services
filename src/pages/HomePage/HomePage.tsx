@@ -33,7 +33,7 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                     <div className={css.visual}>
                         <img
                             className={css.heroImage}
-                            src="/public/images/hero-psychologist.png"
+                            src="/images/hero-psychologist.png"
                             alt="Psychologist during a consultation"
                         />
 
