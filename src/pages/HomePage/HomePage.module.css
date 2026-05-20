@@ -72,11 +72,16 @@
 }
 
 .visual {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 320px;
+}
+
+.imageWrap {
+    position: relative;
+    width: 100%;
+    max-width: 464px;
 }
 
 .heroImage {
@@ -96,8 +101,8 @@
 
 .badge {
     position: absolute;
-    left: 0;
-    bottom: 36px;
+    left: -32px;
+    bottom: 32px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -141,8 +146,8 @@
 
 .questionMark {
     position: absolute;
-    left: 24px;
-    top: 120px;
+    left: -20px;
+    top: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,8 +163,8 @@
 
 .noteIcon {
     position: absolute;
-    right: 18px;
-    top: 36px;
+    right: -18px;
+    top: -18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,7 +178,7 @@
     transform: rotate(15deg);
 }
 
-
+/* MOBILE */
 @media screen and (max-width: 767px) {
     .hero {
         padding: 24px 0 48px;
@@ -210,6 +215,12 @@
         min-height: 260px;
         padding-bottom: 56px;
     }
+    
+    .imageWrap {
+        width: 100%;
+        max-width: 464px;
+        margin: 0 auto;
+    }
 
     .heroImage {
         width: 100%;
@@ -221,13 +232,12 @@
     }
 
     .badge {
-        left: 50%;
-        bottom: -12px;
-        transform: translateX(-50%);
-        min-width: 240px;
-        gap: 12px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        min-width: auto;
+        width: auto;
         padding: 16px;
-        border-radius: 18px;
     }
 
     .badgeIcon {
@@ -246,19 +256,13 @@
     }
 
     .questionMark {
-        left: 8px;
-        top: 40px;
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
+        left: 14px;
+        top: 18px
     }
 
     .noteIcon {
-        right: 8px;
-        top: 12px;
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        right: 14px;
+        top: 10px;
     }
 }
 

@@ -31,6 +31,7 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                     </div>
 
                     <div className={css.visual}>
+                        <div className={css.imageWrap}>
                         <img
                             className={css.heroImage}
                             src="/images/hero-psychologist.png"
@@ -48,7 +49,8 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                         <div className={css.questionMark}>?</div>
                         <div className={ css.noteIcon}>♪</div>
                     </div>
-                </div>
+                    </div>
+                    </div>
             </Container>
         </section>
     );
