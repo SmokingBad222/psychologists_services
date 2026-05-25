@@ -69,6 +69,9 @@
 .linkArrow {
     font-size: 18px;
     line-height: 1;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 .visual {
@@ -82,6 +85,7 @@
     position: relative;
     width: 100%;
     max-width: 464px;
+    margin: 0 auto;
 }
 
 .heroImage {
@@ -101,15 +105,17 @@
 
 .badge {
     position: absolute;
-    left: -32px;
-    bottom: 32px;
+    left: -82px;
+    right: 16px;
+    bottom: 75px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     min-width: 311px;
-    padding: 24px;
+    padding: 24px 18px;
     border-radius: 20px;
     background-color: #54be96;
+    z-index: 3;
 }
 
 .badgeIcon {
@@ -120,24 +126,30 @@
     height: 54px;
     border-radius: 13px;
     background-color: #fbfbfb;
-    color: #54be96;
-    font-size: 24px;
-    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.checkSvg {
+    width: 20px;
+    height: 20px;
+    display: block;
 }
 
 .badgeText {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
 }
 
 .badgeLabel {
+    margin: 0;
     font-size: 14px;
-    line-height: 1.2;
-    color: rgba(251, 251, 251, 0.65);
+    line-height: 1;
+    color: rgba(251, 251, 251, 0.5);
 }
 
 .badgeNumber {
+    margin: 0;
     font-size: 24px;
     line-height: 1;
     font-weight: 700;
@@ -146,8 +158,8 @@
 
 .questionMark {
     position: absolute;
-    left: -20px;
-    top: 52px;
+    left: -35px;
+    top: 144px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -155,16 +167,20 @@
     height: 40px;
     border-radius: 10px;
     background-color: #4535af;
-    color: #fbfbfb;
-    font-size: 22px;
-    font-weight: 700;
     transform: rotate(-15deg);
+    z-index: 2;
 }
 
-.noteIcon {
+ .questionIcon {
+     width: 9px;
+     height: 14px;
+     display: block;
+ }
+
+.userIcon {
     position: absolute;
     right: -18px;
-    top: -18px;
+    top: 202px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -172,10 +188,14 @@
     height: 48px;
     border-radius: 12px;
     background-color: #fbc75e;
-    color: #fbfbfb;
-    font-size: 22px;
-    font-weight: 700;
     transform: rotate(15deg);
+    z-index: 2;
+}
+
+.userSvg {
+    width: 20px;
+    height: 20px;
+    display: block;
 }
 
 /* MOBILE */
@@ -260,7 +280,13 @@
         top: 18px
     }
 
-    .noteIcon {
+    .questionIcon {
+        width: 9px;
+        height: 14px;
+        display: block;
+    }
+
+    .userIcon {
         right: 14px;
         top: 10px;
     }
@@ -287,6 +313,37 @@
     }
 }
 
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .imageWrap {
+        max-width: 420px;
+    }
+
+    .heroImage {
+        width: 100%;
+        max-width: 420px;
+        height: 480px;
+    }
+
+    .badge {
+        left: -34px;
+        right: auto;
+        bottom: 48px;
+        width: 280px;
+        min-width: 280px;
+        padding: 20px 16px;
+    }
+
+    .questionMark {
+        left: -14px;
+        top: 176px;
+    }
+
+    .userIcon {
+        right: -14px;
+        top: 176px;
+    }
+}
+
 @media  screen and (min-width: 1024px) {
     .wrapper {
         grid-template-columns: 1.05fr 0.95fr;
@@ -304,14 +361,33 @@
         justify-content: flex-end;
     }
 
+    .imageWrap {
+        max-width: 464px;
+        margin: 0;
+    }
+
     .heroImage {
+        width: 464px;
         height: 526px;
     }
 
     .badge {
-        left: 0;
-        bottom: 36px;
-        transform: none;
+        left: -63;
+        right: auto;
+        bottom: 75px;
+        width: 311px;
+        min-width: 311px;
+        padding: 24px 18px;
+    }
+
+    .questionMark {
+        left: -18px;
+        top: 158px;
+    }
+
+    .userIcon {
+        right: -24px;
+        top: 34px;
     }
 }
 

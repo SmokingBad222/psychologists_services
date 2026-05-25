@@ -24,6 +24,7 @@ export default function AuthPanel({
 
   const [serverError, setServerError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const isLoginMode = mode === "login";
 
@@ -145,12 +146,30 @@ export default function AuthPanel({
             </div>
   
             <div className={css.field}>
-              <input
-                className={css.input}
-                type="password"
-                placeholder="Password"
-                {...register("password")}
-              />
+              <div className={css.passwordField}>
+                <input
+                  className={css.input}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("password")}
+                />
+
+                <button
+                  type="button"
+                  className={css.passwordToggle}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"} 
+                >
+                  <img
+                    className={css.passwordToggleIcon}
+                    src={showPassword ? "/public/icons/eye.svg" : "/public/icons/eye-off.svg"}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
+
+
               {errors.password && (
                 <p className={css.error}>{ errors.password.message}</p>
               )}

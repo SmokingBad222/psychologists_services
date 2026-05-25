@@ -26,7 +26,12 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                         </p>
 
                         <Link to="/psychologists" className={css.link}>Get started
-                            <span className={ css.linkArrow}>↗</span>
+                            <img
+                                className={css.linkArrow}
+                                src="/icons/arrow-up-right.svg"
+                                alt=""
+                                aria-hidden="true"
+                            />
                         </Link>
                     </div>
 
@@ -39,15 +44,39 @@ export default function HomePage() {     useOutletContext<OutletContextType>();
                         />
 
                         <div className={css.badge}>
-                            <div className={css.badgeIcon}>✓</div>
+                                <div className={css.badgeIcon}>
+                                    <img
+                                        className={css.checkSvg}
+                                        src="/icons/check.svg"
+                                        alt=""
+                                        aria-hidden="true"
+                                    />
+                            </div>
                             <div className={css.badgeText}>
                                 <p className={css.badgeLabel}>Experienced psychologists</p>
                                 <p className={ css.badgeNumber}>15,000</p>
                             </div>
                         </div>
 
-                        <div className={css.questionMark}>?</div>
-                        <div className={ css.noteIcon}>♪</div>
+                            <div className={css.questionMark}>
+                                <img 
+                                    className={css.questionIcon}
+                                    src="/icons/question.svg"
+                                    alt=""
+                                    aria-hidden="true"
+                                />
+                            </div>
+                            
+
+                            <div className={css.userIcon}>
+                                <img
+                                    className={css.userSvg}
+                                    src="/icons/users.svg"
+                                    alt=""
+                                    aria-hidden="true"
+                                />
+                            </div>
+                            
                     </div>
                     </div>
                     </div>
