@@ -5,10 +5,12 @@ export interface AuthResponse {
     expiresIn: string;
     localId: string;
     registered?: boolean;
+    displayName?: string;
 }
 
 export interface StoredAuthData {
     token: string;
     userId: string;
     email: string;
+    name?: string;
 }

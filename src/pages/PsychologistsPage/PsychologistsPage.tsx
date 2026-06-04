@@ -27,6 +27,17 @@ export default function PsychologistsPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const sortOptions = [
+    { value: "name-asc", label: "A to Z" },
+    { value: "name-desc", label: "Z to A" },
+    { value: "price-asc", label: "Price low to high" },
+    { value: "price-desc", label: "Price high to low" },
+    { value: "popular", label: "Popular" },
+    { value: "not-popular", label: "Not popular" },
+    { value: "show-all", label: "Show all"},
+  ]
 
   const userId = authUser?.userId ?? "";
 
@@ -98,25 +109,43 @@ export default function PsychologistsPage() {
           </div>
 
           <div className={css.controls}>
-            <label className={css.label} htmlFor="sort">
-              Sort by
-            </label>
+            <p className={css.label}>
+              Filters
+            </p>
 
-            <select
-              id="sort"
-              className={css.select}
-              value={sortOption}
-              onChange={(event) =>
-                setSortOption(event.target.value as SortOption)
-              }
-            >
-              <option value="name-asc">Name A-Z</option>
-              <option value="name-desc">Name Z-A</option>
-              <option value="price-asc">Price low to high</option>
-              <option value="price-desc">Price high to low</option>
-              <option value="rating-asc">Rating low to high</option>
-              <option value="rating-desc">Rating high to low</option>
-            </select>
+            <div className={css.dropdown}>
+              <button
+                type="button"
+                className={css.dropdownButton}
+                onClick={() => setIsSortOpen((prev) => !prev)}
+              >
+                <span>
+                  {sortOptions.find((option) => option.value === sortOption)?.label}
+                </span>
+
+                <span className={css.dropdownArrow}>
+                  {isSortOpen ? "▲" : "▼"}
+                </span>
+              </button>
+
+              {isSortOpen && (
+                <div className={css.dropdownMenu}>
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={css.dropdownItem}
+                      onClick={() => {
+                        setSortOption(option.value as SortOption);
+                        setIsSortOpen(false);
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

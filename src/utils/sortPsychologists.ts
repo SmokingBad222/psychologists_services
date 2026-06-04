@@ -24,6 +24,15 @@ export function sortPsychologists(items: Psychologist[],
         case 'rating-desc':
             return sortedItems.sort((a, b) => b.rating - a.rating);
         
+        case 'popular':
+            return sortedItems.sort((a, b) => b.rating - a.rating);
+        
+        case 'not-popular':
+            return sortedItems.sort((a, b) => a.rating - b.rating);
+        
+        case 'show-all':
+            return sortedItems;
+        
         default:
             return sortedItems;
     } 

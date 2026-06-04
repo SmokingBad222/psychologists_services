@@ -24,4 +24,7 @@ export type SortOption =
     | "price-asc"
     | "price-desc"
     | "rating-asc"
-    | "rating-desc";
+    | "rating-desc"
+    | "popular"
+    | "not-popular"
+    | "show-all";

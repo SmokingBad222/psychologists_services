@@ -19,17 +19,23 @@ export default function AppointmentModal({
   onClose,
 }: AppointmentModalProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isTimeOpen, setIsTimeOpen] = useState(false);
+
+  const timeOption = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"]; 
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<AppointmentFormValues>({
     resolver: yupResolver(appointmentSchema),
     defaultValues: {
       name: "",
       phone: "",
+      time: "",
       email: "",
       comment: "",
     },
@@ -132,6 +138,44 @@ export default function AppointmentModal({
               <p className={css.error}>{errors.phone.message}</p>
             )}
           </div>
+
+          <div className={`${css.field} ${css.timeField}`}>
+            <button
+              type="button"
+              className={css.timeButton}
+              onClick={() => setIsTimeOpen((prev) => !prev)}
+            >
+
+              <span>{watch("time") || "00:00"}</span>
+              <span className={css.timeIcon}>🕒</span>
+            </button>
+
+            <input type="hidden" {...register("time")} />
+            
+            {isTimeOpen && (
+              <div className={css.timeDropdown}>
+                <p className={css.timeDropdownTitle}>Meeting time</p>
+
+                {timeOption.map((time) => (
+                  <button
+                    key={time}
+                    type="button"
+                    className={css.timeOption}
+                    onClick={() => {
+                      setValue("time", time, { shouldValidate: true });
+                      setIsTimeOpen(false);
+                    }}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            )}
+            </div>
+
+          {errors.time && (
+            <p className={css.error}>{errors.time.message}</p>
+          )}
 
           <div className={css.field}>
             <input

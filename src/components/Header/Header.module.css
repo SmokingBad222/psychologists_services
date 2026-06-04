@@ -4,12 +4,12 @@
 }
 
 .inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
     min-height: 96px;
     gap: 24px;
-} 
+}
 
 .logo {
     flex-shrink: 0;
@@ -24,16 +24,118 @@
     color: #54be96;
 }
 
+.rightSide {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 28px;
+}
+
+.userBlock {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.userIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: #54be96;
+    flex-shrink: 0;
+}
+
+.userSvg {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+.userName {
+    font-size: 16px;
+    line-height: 1.25;
+    color: #191a15;
+}
+
+.logoutButton,
+.authButton {
+    min-width: 124px;
+    height: 48px;
+    padding: 14px 24px;
+    border: 1px solid rgba(25, 26, 21, 0.2);
+    border-radius: 30px;
+    background-color: transparent;
+    font-size: 16px;
+    line-height: 1.25;
+    color: #191a15;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.logoutButton:hover,
+.logoutButton:focus,
+.authButton:hover,
+.authButton:focus {
+    background-color: #54be96;
+    border-color: #54be96;
+    color: #fbfbfb;
+}
+
+.primaryButton {
+    min-width: 171px;
+    height: 48px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 30px;
+    background-color: #54be96;
+    font-size: 16px;
+    line-height: 1.25;
+    color: #fbfbfb;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.primaryButton:hover,
+.primaryButton:focus {
+    opacity: 0.9;
+}
+
 @media screen and (max-width: 767px) {
     .inner {
+        grid-template-columns: 1fr;
         min-height: auto;
-        flex-direction: column;
-        align-items: stretch;
         gap: 16px;
         padding: 16px 0;
     }
 
     .logo {
         text-align: center;
+    }
+
+    .rightSide {
+        justify-self: stretch;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .userBlock {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .logoutButton,
+    .authButton,
+    .primaryButton {
+        min-width: 132px;
+        height: 44px;
+        padding: 10px 18px;
+        font-size: 15px;
     }
 }

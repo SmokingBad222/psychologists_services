@@ -36,6 +36,7 @@ export default function AuthPanel({
   } = useForm<AuthFormValues>({
     resolver: yupResolver(authSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
@@ -133,6 +134,21 @@ export default function AuthPanel({
 
         <form className={css.form} onSubmit={handleSubmit(handleSubmitForm)}>
           <div className={css.fields}>
+
+            {!isLoginMode && (
+              <div className={css.field}>
+                <input
+                  className={css.input}
+                  type="text"
+                  placeholder="Name"
+                  {...register("name")}
+                />
+              {errors.name && (
+                <p className={css.error}>{errors.name.message}</p>
+              )}
+              </div>
+            )}
+            
             <div className={css.field}>
               <input
                 className={css.input}
@@ -162,7 +178,7 @@ export default function AuthPanel({
                 >
                   <img
                     className={css.passwordToggleIcon}
-                    src={showPassword ? "/public/icons/eye.svg" : "/public/icons/eye-off.svg"}
+                    src={showPassword ? "/icons/eye.svg" : "/icons/eye-off.svg"}
                     alt=""
                     aria-hidden="true"
                   />

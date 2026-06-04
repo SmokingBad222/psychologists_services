@@ -11,6 +11,9 @@ export const appointmentSchema = yup.object({
         .trim()
         .min(6, "Phone must be at least 6 characters")
         .required("Phone is required"),
+    time: yup
+        .string()
+        .required("Meeting time is required"),
     email: yup
         .string()
         .trim()
